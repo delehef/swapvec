@@ -175,9 +175,14 @@ where
     /// write one batch to disk, until the elements in memory have a count
     /// smaller than or equal to batch size.
     pub fn push(&mut self, element: T) -> Result<(), SwapVecError> {
+        self.after_push_work()?;
         self.vector.push_back(element);
-        self.after_push_work()
+        Ok(())
     }
+
+    pub fn last_mut(&mut self) -> Option<&mut T> {
+        self.vector.back_mut()
+    } 
 
     /// Check if enough items have been pushed so that
     /// the temporary file has been created.  
